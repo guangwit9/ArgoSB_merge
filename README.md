@@ -1,43 +1,30 @@
-自动化 VPS 节点文件同步至 GitLab
-这是一个用于自动化 VPS 节点文件同步的脚本项目。它能够将多个 VPS 上相同路径下的配置文件（/etc/s-box/jh_sub.txt, /etc/s-box/sing_box_client.json, /etc/s-box/clash_meta_client.yaml）合并到同一个 GitLab 仓库中，以避免手动复制和文件冲突。
+🤖 VPS 节点文件自动化同步工具
+📦 项目简介
+本项目旨在为拥有多个 VPS 的用户提供一个自动化解决方案，以同步和管理各服务器上的配置文件。通过本脚本，可将各 VPS 相同路径下的节点文件 (/etc/s-box/jh_sub.txt, /etc/s-box/sing_box_client.json, /etc/s-box/clash_meta_client.yaml) 自动合并至同一个 GitLab 仓库，实现无人值守的节点管理。
 
-项目原理
-一键安装与同步：通过一个简单的 bash 命令，脚本会自动在 VPS 上安装必要的依赖（git, python3, pyyaml），然后启动自动化流程。
+🛠 使用前准备
+🔐 GitLab 设置提醒
+请在你的 GitLab 项目设置中完成以下配置：
 
-GitLab 仓库操作：脚本使用你提供的 GitLab Token 进行认证，从远程仓库拉取最新文件。
+打开：Settings → Repository → Protected branches
 
-智能文件合并：
+启用：Allow force push
 
-Clash 和 Sing-box 文件：脚本会解析新旧文件，提取所有节点信息并合并。如果节点名称相同，会保留最新文件中的配置。
+使用 Token 时，建议设置为最小权限（仅允许 push），并注意 Token 的有效期与保存方式
 
-jh_sub.txt：脚本会将新旧文件中的所有行合并并自动去重，确保内容唯一。
+请提前准备以下信息（均为必填）：
+GITLAB_TOKEN：你的 GitLab 项目 Token
 
-提交与推送：合并完成后，脚本会将更新后的文件自动提交并推送到你的 GitLab 仓库，保持文件同步。
+GIT_USER_NAME：你的 GitLab 用户名（注意是用户名，而非昵称）
 
-快速开始
-准备 GitLab 仓库
+GIT_USER_EMAIL：你的 GitLab 邮箱
 
-在 GitLab 上创建一个新项目，项目名为 all，默认分支为 main。
+GITLAB_REPO_URL：你的 GitLab 项目完整 URL
 
-前往你的 GitLab 用户设置 -> Access Tokens，创建一个新的 Personal Access Token，并确保勾选 read_repository 和 write_repository 权限。
+🚀 一行命令自动部署
+本脚本的核心优势在于其零交互自动化。你只需在每个 VPS 上运行一个简单的命令，即可完成所有配置、依赖安装和文件同步。
 
-准备 GitHub 仓库
-
-在 GitHub 上创建一个新仓库，用于存放本项目的脚本。
-
-将以下三个文件上传到你的 GitHub 仓库根目录：
-
-upload_and_merge.py
-
-gitlab_uploader.sh
-
-setup_vps.sh
-
-运行一键同步命令
-
-在你的每个 VPS 上，打开终端，以 root 用户身份运行以下命令。将 <...> 替换为你自己的信息。
-
-注意：此命令会在 VPS 上安装必要的软件，并需要磁盘空间。如果遇到空间不足错误，请先清理 VPS 存储。
+将以下命令中的参数替换为你的实际信息，即可一键完成所有流程：
 
 Bash
 
@@ -46,9 +33,32 @@ GIT_USER_NAME="<你的GitLab用户名>" \
 GIT_USER_EMAIL="<你的GitLab邮箱>" \
 GITLAB_REPO_URL="https://gitlab.com/<你的GitLab用户名>/all.git" \
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/<你的GitHub用户名>/<你的GitHub仓库名>/main/setup_vps.sh)"
-文件说明
-setup_vps.sh：这是核心的一键安装和运行脚本。它会检查 VPS 依赖，下载其他脚本，并启动自动化流程。
+✅ 特点：
 
-gitlab_uploader.sh：这个脚本负责 Git 操作，包括克隆 GitLab 仓库、调用 Python 脚本进行合并、以及最后的提交与推送。
+会自动安装 git, python3, PyYAML 等必要依赖。
 
-upload_and_merge.py：这个 Python 脚本包含核心的文件合并逻辑，它会处理不同格式的配置文件，并确保节点信息不会丢失或冲突。
+会自动处理 Git 配置和 GitLab 认证。
+
+会智能合并 VPS 上的节点文件与 GitLab 仓库中的文件，避免冲突。
+
+全流程无交互，适合远程自动运行。
+
+📚 文件说明
+setup_vps.sh：这个是核心的“一键”脚本。它会检查 VPS 依赖，下载其他脚本，并启动自动化流程。
+
+gitlab_uploader.sh：这个脚本负责所有 Git 操作，包括克隆 GitLab 仓库、调用 Python 脚本进行合并、以及最后的提交与推送。
+
+upload_and_merge.py：这个 Python 脚本包含核心的文件合并逻辑。它会根据文件类型（JSON, YAML, TXT）解析并合并节点信息，确保内容不会丢失或冲突。
+
+🧭 安全与隐私说明
+本脚本完全本地执行，不会上传、回传或存储任何你的配置或 GitLab 凭据。
+
+敏感信息（如 Token）通过环境变量传递，不会硬编码到脚本文件中，确保安全。
+
+GitLab Token 仅用于你的 Git 操作，不会泄露给他人。
+
+你可以使用以下命令查看任意脚本的源码：
+
+Bash
+
+curl -Ls https://raw.githubusercontent.com/<你的GitHub用户名>/<你的GitHub仓库名>/main/setup_vps
