@@ -35,5 +35,5 @@
 GITLAB_TOKEN="<你的GitLab访问令牌>" \
 GIT_USER_NAME="<你的GitLab用户名>" \
 GIT_USER_EMAIL="<你的GitLab邮箱>" \
-GITLAB_REPO_URL="https://gitlab.com/<你的GitLab用户名>/all.git" \
+GITLAB_REPO_URL="https://gitlab.com/<你的GitLab用户名>/<你的GitLab项目名>.git" \
 bash -c "$(wget -qO- https://raw.githubusercontent.com/guangwit9/ArgoSB_merge/main/setup_vps.sh)"
