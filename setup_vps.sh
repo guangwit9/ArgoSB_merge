@@ -16,7 +16,7 @@ INSTALL_DIR="/root/scripts"
 
 # Check if script is run with root privileges
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root." 
+   echo "This script must be run as root."
    exit 1
 fi
 
@@ -37,12 +37,14 @@ else
 fi
 
 echo "Installing Python dependencies..."
-# Use a full path or re-source the shell to ensure pip3 is found
-if ! command -v pip3 &> /dev/null; then
-    echo "Error: pip3 command not found after installation. Exiting."
+# Use the full path for pip3 to ensure it is found
+/usr/bin/pip3 install PyYAML
+
+# Check if PyYAML was installed successfully
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to install PyYAML. Exiting."
     exit 1
 fi
-pip3 install PyYAML
 
 # Create installation directory
 mkdir -p "$INSTALL_DIR"
