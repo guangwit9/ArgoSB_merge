@@ -43,6 +43,7 @@ bash -c "$(wget -qO- https://raw.githubusercontent.com/guangwit9/ArgoSB_merge/ma
 ---
 
 ✅ 特点：
+
 -会自动安装 git, python3, PyYAML 等必要依赖。
 -会自动处理 Git 配置和 GitLab 认证。
 -会智能合并 VPS 上的节点文件与 GitLab 仓库中的文件，避免冲突。
