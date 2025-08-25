@@ -2,6 +2,8 @@
 
 ## 📦 项目简介
 
+本项目是甬哥 [yonggekkk](https://github.com/yonggekkk) 的 [sing-box-yg](https://github.com/yonggekkk/sing-box-yg) 项目gitlab订阅链接的配套自动化工具。
+
 本项目旨在为拥有多个 VPS 的用户提供一个自动化解决方案，以同步和管理各服务器上的配置文件。通过本脚本，可将各 VPS 相同路径下的节点文件（`/etc/s-box/jh_sub.txt`, `/etc/s-box/sing_box_client.json`, `/etc/s-box/clash_meta_client.yaml`）自动合并至同一个 GitLab 仓库，实现无人值守的节点管理。
 
 ---
