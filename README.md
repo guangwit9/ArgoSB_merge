@@ -1,64 +1,39 @@
-🤖 VPS 节点文件自动化同步工具
-📦 项目简介
-本项目旨在为拥有多个 VPS 的用户提供一个自动化解决方案，以同步和管理各服务器上的配置文件。通过本脚本，可将各 VPS 相同路径下的节点文件 (/etc/s-box/jh_sub.txt, /etc/s-box/sing_box_client.json, /etc/s-box/clash_meta_client.yaml) 自动合并至同一个 GitLab 仓库，实现无人值守的节点管理。
+# 🤖 VPS 节点文件自动化同步工具
 
-🛠 使用前准备
-🔐 GitLab 设置提醒
+## 📦 项目简介
+
+本项目旨在为拥有多个 VPS 的用户提供一个自动化解决方案，以同步和管理各服务器上的配置文件。通过本脚本，可将各 VPS 相同路径下的节点文件（`/etc/s-box/jh_sub.txt`, `/etc/s-box/sing_box_client.json`, `/etc/s-box/clash_meta_client.yaml`）自动合并至同一个 GitLab 仓库，实现无人值守的节点管理。
+
+---
+
+## 🛠 使用前准备
+
+### 🔐 GitLab 设置提醒
+
 请在你的 GitLab 项目设置中完成以下配置：
 
-打开：Settings → Repository → Protected branches
+-   打开：`Settings → Repository → Protected branches`
+-   启用：**Allow force push**
+-   使用 Token 时，建议设置为最小权限（仅允许 push），并注意 Token 的有效期与保存方式
 
-启用：Allow force push
+### 请提前准备以下信息（均为必填）：
 
-使用 Token 时，建议设置为最小权限（仅允许 push），并注意 Token 的有效期与保存方式
+-   `GITLAB_TOKEN`：你的 GitLab 项目 Token
+-   `GIT_USER_NAME`：你的 GitLab 用户名（注意是用户名，而非昵称）
+-   `GIT_USER_EMAIL`：你的 GitLab 邮箱
+-   `GITLAB_REPO_URL`：你的 GitLab 项目完整 URL
 
-请提前准备以下信息（均为必填）：
-GITLAB_TOKEN：你的 GitLab 项目 Token
+---
 
-GIT_USER_NAME：你的 GitLab 用户名（注意是用户名，而非昵称）
+## 🚀 一行命令自动部署
 
-GIT_USER_EMAIL：你的 GitLab 邮箱
-
-GITLAB_REPO_URL：你的 GitLab 项目完整 URL
-
-🚀 一行命令自动部署
 本脚本的核心优势在于其零交互自动化。你只需在每个 VPS 上运行一个简单的命令，即可完成所有配置、依赖安装和文件同步。
 
 将以下命令中的参数替换为你的实际信息，即可一键完成所有流程：
 
-Bash
-
+```bash
 GITLAB_TOKEN="<你的GitLab访问令牌>" \
 GIT_USER_NAME="<你的GitLab用户名>" \
 GIT_USER_EMAIL="<你的GitLab邮箱>" \
-GITLAB_REPO_URL="https://gitlab.com/<你的GitLab用户名>/all.git" \
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/<你的GitHub用户名>/<你的GitHub仓库名>/main/setup_vps.sh)"
-✅ 特点：
-
-会自动安装 git, python3, PyYAML 等必要依赖。
-
-会自动处理 Git 配置和 GitLab 认证。
-
-会智能合并 VPS 上的节点文件与 GitLab 仓库中的文件，避免冲突。
-
-全流程无交互，适合远程自动运行。
-
-📚 文件说明
-setup_vps.sh：这个是核心的“一键”脚本。它会检查 VPS 依赖，下载其他脚本，并启动自动化流程。
-
-gitlab_uploader.sh：这个脚本负责所有 Git 操作，包括克隆 GitLab 仓库、调用 Python 脚本进行合并、以及最后的提交与推送。
-
-upload_and_merge.py：这个 Python 脚本包含核心的文件合并逻辑。它会根据文件类型（JSON, YAML, TXT）解析并合并节点信息，确保内容不会丢失或冲突。
-
-🧭 安全与隐私说明
-本脚本完全本地执行，不会上传、回传或存储任何你的配置或 GitLab 凭据。
-
-敏感信息（如 Token）通过环境变量传递，不会硬编码到脚本文件中，确保安全。
-
-GitLab Token 仅用于你的 Git 操作，不会泄露给他人。
-
-你可以使用以下命令查看任意脚本的源码：
-
-Bash
-
-curl -Ls https://raw.githubusercontent.com/<你的GitHub用户名>/<你的GitHub仓库名>/main/setup_vps
+GITLAB_REPO_URL="[https://gitlab.com/](https://gitlab.com/)<你的GitLab用户名>/all.git" \
+bash -c "$(curl -fsSL [https://raw.githubusercontent.com/](https://raw.githubusercontent.com/)<你的GitHub用户名>/<你的GitHub仓库名>/main/setup_vps.sh)"
