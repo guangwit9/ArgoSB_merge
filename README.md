@@ -48,7 +48,7 @@ bash -c "$(wget -qO- https://raw.githubusercontent.com/guangwit9/ArgoSB_merge/ma
 -会自动处理 Git 配置和 GitLab 认证。
 -会智能合并 VPS 上的节点文件与 GitLab 仓库中的文件，避免冲突。
 -全流程无交互，适合远程自动运行。
----
+
 ## 📚 文件说明
 `setup_vps.sh`：这是核心的“一键”脚本。它会检查 VPS 依赖，下载其他脚本，并启动自动化流程。
 `gitlab_uploader.sh`：这个脚本负责 Git 操作，包括克隆 GitLab 仓库、调用 Python 脚本进行合并、以及最后的提交与推送。
