@@ -39,3 +39,25 @@ GIT_USER_NAME="<你的GitLab用户名>" \
 GIT_USER_EMAIL="<你的GitLab邮箱>" \
 GITLAB_REPO_URL="https://gitlab.com/<你的GitLab用户名>/<你的GitLab项目名>.git" \
 bash -c "$(wget -qO- https://raw.githubusercontent.com/guangwit9/ArgoSB_merge/main/setup_vps.sh)"
+✅ 特点：
+-会自动安装 git, python3, PyYAML 等必要依赖。
+-会自动处理 Git 配置和 GitLab 认证。
+-会智能合并 VPS 上的节点文件与 GitLab 仓库中的文件，避免冲突。
+-全流程无交互，适合远程自动运行。
+---
+## 📚 文件说明
+`setup_vps.sh`：这是核心的“一键”脚本。它会检查 VPS 依赖，下载其他脚本，并启动自动化流程。
+`gitlab_uploader.sh`：这个脚本负责 Git 操作，包括克隆 GitLab 仓库、调用 Python 脚本进行合并、以及最后的提交与推送。
+`upload_and_merge.py`：这个 Python 脚本包含核心的文件合并逻辑。它会根据文件类型（JSON, YAML, TXT）解析并合并节点信息，并确保内容不会丢失或冲突。
+
+## 🧭 安全与隐私说明
+本脚本完全本地执行，不会上传、回传或存储任何你的配置或 GitLab 凭据。
+
+敏感信息（如 Token）通过环境变量传递，不会硬编码到脚本文件中，确保安全。
+
+GitLab Token 仅用于你的 Git 操作，不会泄露给他人。
+
+你可以使用以下命令查看任意脚本的源码：
+```bash
+curl -Ls https://raw.githubusercontent.com/guangwit9/ArgoSB_merge/main/setup_vps.sh | less
+```
